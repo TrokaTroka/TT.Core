@@ -28,6 +28,6 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           user: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local_dir: "./app"
+          local_dir: "./Release"
           remote_dir: "./app"
           delete: "true"
