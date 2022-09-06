@@ -235,4 +235,34 @@ public class BookService : BaseService, IBookService
         return user != null 
             && favorites.Any(f => f.IdUser == user.Id);
     }
+
+    Task<Attempt<Failure, PaginatedDto<BookshellDto>>> IBookService.GetBookshell(PaginationQuery paginationQuery)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Attempt<Failure, BookDto>> IBookService.GetBookById(Guid idBook)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Attempt<Failure, List<MyBooksDto>>> IBookService.GetMyBooks()
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Attempt<Failure, Guid>> IBookService.CreateBook(CreateBookDto bookDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Attempt<Failure, bool>> IBookService.UpdateBook(UpdateBookDto bookDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Attempt<Failure, bool>> IBookService.DeleteBook(Guid idBook)
+    {
+        throw new NotImplementedException();
+    }
 }

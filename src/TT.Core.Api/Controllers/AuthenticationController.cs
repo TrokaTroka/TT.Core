@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TT.Authentication.Application.Dtos.Inputs;
-using TT.Authentication.Application.Interfaces;
-using TT.Package.Core.Controllers;
+using TT.Core.Application.Dtos.Inputs;
+using TT.Core.Application.Interfaces;
+using TT.Core.Application.Notifications;
 
-namespace TT.Authentication.Api.Controllers;
+namespace TT.Core.Api.Controllers;
 
 [Route("api/authentication")]
 [ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : MainController
 {
     private readonly IAuthenticateService _authService;
-    public AuthenticationController(IAuthenticateService authService)
+    public AuthenticationController(IAuthenticateService authService,
+        INotifier notifier) : base(notifier)
     {
         _authService = authService;
     }
@@ -26,12 +27,12 @@ public class AuthenticationController : ControllerBase
     [Route("signin")]
     public async Task<IActionResult> SignIn([FromBody] LoginDto inputDto)
     {
-        var result = await _authService.AuthenticateUser(inputDto);
+        var attempt = await _authService.AuthenticateUser(inputDto);
 
-        if (!result.Succeeded)            
-            return BadRequest(result.Failure.Message);
+        if (!attempt.Succeeded)            
+            return BadRequest(attempt.Failure.Message);
         
-        return Ok(result.Success);
+        return Ok(attempt.Success);
     }
 
     [HttpPost]
@@ -41,12 +42,12 @@ public class AuthenticationController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _authService.CreateUser(inputDto);
+        var attempt = await _authService.CreateUser(inputDto);
 
-        if (!result.Succeeded)
-            return BadRequest(result.Failure.Message);
+        if (!attempt.Succeeded)
+            return BadRequest(attempt.Failure.Message);
 
-        return Created(nameof(SignIn), result.Success);
+        return Created(nameof(SignIn), attempt.Success);
     }
 
     [HttpPost]
@@ -56,17 +57,17 @@ public class AuthenticationController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var refreshToken = await _authService.GetRefreshToken(Guid.Parse(refreshTokenId));
+        var attemptRefreshToken = await _authService.GetRefreshToken(Guid.Parse(refreshTokenId));
 
-        if (!refreshToken.Succeeded)
-            return BadRequest(refreshToken.Failure.Message);
+        if (!attemptRefreshToken.Succeeded)
+            return BadRequest(attemptRefreshToken.Failure.Message);
 
-        var result = await _authService.GenerateToken(refreshToken.Success);
+        var attempt = await _authService.GenerateToken(attemptRefreshToken.Success);
 
-        if (result.Succeeded)
-            return BadRequest(result.Failure.Message);
+        if (attempt.Succeeded)
+            return BadRequest(attempt.Failure.Message);
 
-        return Ok(result.Success);
+        return Ok(attempt.Success);
     }
 
     [HttpPost]
@@ -76,12 +77,12 @@ public class AuthenticationController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _authService.SendResetPasswordLink(inputDto);
+        var attempt = await _authService.SendResetPasswordLink(inputDto);
 
-        if (result.Succeeded)
-            return BadRequest(result.Failure.Message);
+        if (attempt.Succeeded)
+            return BadRequest(attempt.Failure.Message);
 
-        return Ok();
+        return Ok(attempt.Success);
     }
 
     [HttpPut]
@@ -91,11 +92,11 @@ public class AuthenticationController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _authService.ResetPassword(inputDto);
+        var attempt = await _authService.ResetPassword(inputDto);
 
-        if (result.Succeeded)
-            return BadRequest(result.Failure.Message);
+        if (attempt.Succeeded)
+            return BadRequest(attempt.Failure.Message);
 
-        return Ok();
+        return Ok(attempt.Success);
     }
 }
