@@ -18,7 +18,7 @@ public class AuthenticationController : ControllerBase
     [Route("check")]
     public IActionResult Check()
     {
-        return new JsonResult("Api okay");
+        return new JsonResult("Api ok");
     }
 
     [HttpPost]
