@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +15,6 @@ public static class ApiConfig
         IConfiguration configuration)
     {
         AppSettings.Initialize(configuration.GetSection("AppSettings").Get<AppSettings>());
-        //MongoSettings.Initialize(configuration.GetSection("MongoSettings").Get<MongoSettings>());
 
         services.AddDbContext<TrokaTrokaDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("SqlServer")));

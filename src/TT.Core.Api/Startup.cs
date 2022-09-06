@@ -12,12 +12,18 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDependencies(Configuration);
+        services.AddApiConfiguration(Configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
     {
-        app.UseDependencies(environment, Configuration);
+        if (environment.IsDevelopment())        
+            app.UseDeveloperExceptionPage();        
+
+        app.UseSwagger();
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Troka Troka API"));
+
+        app.UseApiConfiguration();
     }
 
 }
