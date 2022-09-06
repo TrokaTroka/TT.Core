@@ -1,9 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TT.Core.Domain\TT.Core.Domain.csproj" />
+    <ProjectReference Include="..\TT.Core.Infra.Data\TT.Core.Infra.Data.csproj" />
+    <ProjectReference Include="..\TT.Core.Infra.Integration\TT.Core.Infra.Integration.csproj" />
+  </ItemGroup>
 
 </Project>

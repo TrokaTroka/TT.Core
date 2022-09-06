@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Infra.Integration/TT.Core.Infra.Integration.csproj": {}
+    "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Infra.Integration\\TT.Core.Infra.Integration.csproj": {}
   },
   "projects": {
-    "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Infra.Integration/TT.Core.Infra.Integration.csproj": {
+    "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Infra.Integration\\TT.Core.Infra.Integration.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Infra.Integration/TT.Core.Infra.Integration.csproj",
+        "projectUniqueName": "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Infra.Integration\\TT.Core.Infra.Integration.csproj",
         "projectName": "TT.Core.Infra.Integration",
-        "projectPath": "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Infra.Integration/TT.Core.Infra.Integration.csproj",
-        "packagesPath": "/Users/roberio/.nuget/packages/",
-        "outputPath": "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Infra.Integration/obj/",
+        "projectPath": "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Infra.Integration\\TT.Core.Infra.Integration.csproj",
+        "packagesPath": "C:\\Users\\Robério Silva\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Infra.Integration\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/roberio/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Robério Silva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Nuget": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,6 +40,16 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Azure.Storage.Blobs": {
+              "target": "Package",
+              "version": "[12.11.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -52,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.203/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

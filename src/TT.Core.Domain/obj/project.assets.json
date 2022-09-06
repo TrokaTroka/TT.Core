@@ -8,24 +8,27 @@
     "net6.0": []
   },
   "packageFolders": {
-    "/Users/roberio/.nuget/packages/": {}
+    "C:\\Users\\Robério Silva\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Domain/TT.Core.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Domain\\TT.Core.Domain.csproj",
       "projectName": "TT.Core.Domain",
-      "projectPath": "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Domain/TT.Core.Domain.csproj",
-      "packagesPath": "/Users/roberio/.nuget/packages/",
-      "outputPath": "/Users/roberio/Desktop/PROJETOS/TrokaTroka/TT.Core/src/TT.Core.Domain/obj/",
+      "projectPath": "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Domain\\TT.Core.Domain.csproj",
+      "packagesPath": "C:\\Users\\Robério Silva\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Robério Silva\\Desktop\\TrokaTroka\\TT.Core\\src\\TT.Core.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/roberio/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Robério Silva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Nuget": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -58,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.203/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
