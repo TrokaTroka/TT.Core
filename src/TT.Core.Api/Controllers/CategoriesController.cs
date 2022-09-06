@@ -2,17 +2,15 @@
 using TT.Core.Domain.Interfaces.Repositories;
 using TT.Core.Application.Dtos.Inputs;
 using TT.Core.Domain.Entities;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoriesController : MainController
+public class CategoriesController : ControllerBase
 {
     private readonly ICategoryRepository _categoryRepository;
-    public CategoriesController(ICategoryRepository categoryRepository,
-        INotifier notifier) : base(notifier)
+    public CategoriesController(ICategoryRepository categoryRepository)
     {
         _categoryRepository = categoryRepository;
     }

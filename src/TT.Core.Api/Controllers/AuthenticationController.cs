@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TT.Core.Application.Dtos.Inputs;
 using TT.Core.Application.Interfaces;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Route("api/authentication")]
 [ApiController]
-public class AuthenticationController : MainController
+public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticateService _authService;
-    public AuthenticationController(IAuthenticateService authService,
-        INotifier notifier) : base(notifier)
+    public AuthenticationController(IAuthenticateService authService)
     {
         _authService = authService;
     }
@@ -29,10 +27,10 @@ public class AuthenticationController : MainController
     {
         var attempt = await _authService.AuthenticateUser(inputDto);
 
-        if (!attempt.Succeeded)            
-            return BadRequest(attempt.Failure.Message);
-        
-        return Ok(attempt.Success);
+        if (attempt.Succeeded)
+            return Ok(attempt);
+
+        return BadRequest(attempt);        
     }
 
     [HttpPost]
@@ -44,10 +42,10 @@ public class AuthenticationController : MainController
 
         var attempt = await _authService.CreateUser(inputDto);
 
-        if (!attempt.Succeeded)
-            return BadRequest(attempt.Failure.Message);
+        if (attempt.Succeeded)
+            return Created(nameof(SignIn), attempt);
 
-        return Created(nameof(SignIn), attempt.Success);
+        return BadRequest(attempt);
     }
 
     [HttpPost]
@@ -65,9 +63,9 @@ public class AuthenticationController : MainController
         var attempt = await _authService.GenerateToken(attemptRefreshToken.Success);
 
         if (attempt.Succeeded)
-            return BadRequest(attempt.Failure.Message);
+            return Ok(attempt);
 
-        return Ok(attempt.Success);
+        return BadRequest(attempt);
     }
 
     [HttpPost]
@@ -80,9 +78,9 @@ public class AuthenticationController : MainController
         var attempt = await _authService.SendResetPasswordLink(inputDto);
 
         if (attempt.Succeeded)
-            return BadRequest(attempt.Failure.Message);
+            return Ok(attempt);
 
-        return Ok(attempt.Success);
+        return BadRequest(attempt);
     }
 
     [HttpPut]
@@ -95,8 +93,8 @@ public class AuthenticationController : MainController
         var attempt = await _authService.ResetPassword(inputDto);
 
         if (attempt.Succeeded)
-            return BadRequest(attempt.Failure.Message);
+            return Ok(attempt);
 
-        return Ok(attempt.Success);
+        return BadRequest(attempt);
     }
 }

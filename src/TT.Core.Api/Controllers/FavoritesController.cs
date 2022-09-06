@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using TT.Core.Application.Interfaces;
-using TT.Core.Application.Notifications;
 using TT.Core.Application.Dtos.Inputs.Querys;
 
 namespace TT.Core.Api.Controllers;
@@ -9,11 +8,10 @@ namespace TT.Core.Api.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class FavoritesController : MainController
+public class FavoritesController : ControllerBase
 {
     private readonly IFavoriteService _favoriteService;
-    public FavoritesController(IFavoriteService favoriteService,
-        INotifier notifier) : base(notifier)
+    public FavoritesController(IFavoriteService favoriteService)
     {
         _favoriteService = favoriteService;
     }
@@ -22,12 +20,12 @@ public class FavoritesController : MainController
     [Route("")]
     public async Task<IActionResult> GetMyFavorites([FromQuery] PaginationQuery paginationQuery)
     {
-        var booksVM = await _favoriteService.GetMyFavorites(paginationQuery);
+        var attempt = await _favoriteService.GetMyFavorites(paginationQuery);
 
-        if (booksVM == null)
-            return NotFound("");
+        if (attempt.Succeeded)
+            return Ok(attempt);
 
-        return Ok(booksVM);
+        return NotFound(attempt);
     }
 
     [HttpPost]
@@ -37,9 +35,12 @@ public class FavoritesController : MainController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await _favoriteService.CreateFavorite(idBook);
-                    
-        return Created(nameof(CreateFavorite), idBook);
+        var attempt = await _favoriteService.CreateFavorite(idBook);
+                 
+        if(attempt.Succeeded)
+            return Created(nameof(CreateFavorite), attempt.Success);
+
+        return BadRequest(attempt);
     }
 
     [HttpDelete]
@@ -49,8 +50,11 @@ public class FavoritesController : MainController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await _favoriteService.DeleteFavorite(idBook);
+        var attempt = await _favoriteService.DeleteFavorite(idBook);
+        
+        if(attempt.Succeeded)
+            return Ok(attempt);
 
-        return NoContent();
+        return BadRequest(attempt);
     }
 }

@@ -1,8 +1,9 @@
 ﻿using TT.Core.Application.Dtos.Inputs;
+using TT.Core.Domain.Entities;
 
 namespace TT.Core.Application.Interfaces;
 
 public interface IRatingService
 {
-    Task<Guid> Create(CreateRatingDto ratingDto);
+    Task<Attempt<Failure, Guid>> Create(CreateRatingDto ratingDto);
 }

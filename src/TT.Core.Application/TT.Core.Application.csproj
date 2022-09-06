@@ -7,6 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Template\Active-account.html" />
+    <None Remove="Template\Reset-password.html" />
+    <None Remove="Template\Trade-offer.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Template\Active-account.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template\Reset-password.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template\Trade-offer.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
   </ItemGroup>
@@ -15,6 +33,10 @@
     <ProjectReference Include="..\TT.Core.Domain\TT.Core.Domain.csproj" />
     <ProjectReference Include="..\TT.Core.Infra.Data\TT.Core.Infra.Data.csproj" />
     <ProjectReference Include="..\TT.Core.Infra.Integration\TT.Core.Infra.Integration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Template\Active-account.html" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CartsController : MainController
+public class CartsController : ControllerBase
 {
-    public CartsController(INotifier notifier) : base(notifier)
+    public CartsController()
     { }
 
     [HttpGet]

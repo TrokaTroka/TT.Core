@@ -1,9 +1,10 @@
 ﻿using TT.Core.Application.Dtos.Inputs;
+using TT.Core.Domain.Entities;
 
 namespace TT.Core.Application.Interfaces;
 
 public interface ITradeService
 {
-    Task<CreateTradeDto> GetAll();
-    Task Create(CreateTradeDto tradeDto);
+    Task<Attempt<Failure, CreateTradeDto>> GetAll();
+    Task<Attempt<Failure, bool>> Create(CreateTradeDto tradeDto);
 }

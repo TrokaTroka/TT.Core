@@ -7,12 +7,6 @@ namespace TT.Core.Application.Interfaces;
 
 public interface IBookService
 {
-    //Task<PaginatedDto<BookshellDto>> GetBookshell(PaginationQuery paginationQuery);
-    /*Task<BookDto> GetBookById(Guid idBook);
-    Task<List<MyBooksDto>> GetMyBooks();
-    Task<Guid> CreateBook(CreateBookDto bookDto);
-    Task UpdateBook(UpdateBookDto bookDto);
-    Task DeleteBook(Guid idBook);*/
     Task<Attempt<Failure, PaginatedDto<BookshellDto>>> GetBookshell(PaginationQuery paginationQuery);
     Task<Attempt<Failure, BookDto>> GetBookById(Guid idBook);
     Task<Attempt<Failure, List<MyBooksDto>>> GetMyBooks();

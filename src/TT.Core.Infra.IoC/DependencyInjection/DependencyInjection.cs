@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using TT.Core.Application.Helpers;
 using TT.Core.Application.Interfaces;
 using TT.Core.Application.Interfaces.Helpers;
-using TT.Core.Application.Notifications;
 using TT.Core.Application.Services;
 using TT.Core.Domain.Interfaces.Repositories;
 using TT.Core.Infra.Data.Context;
@@ -23,12 +22,10 @@ public static class DependencyInjection
 
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<BaseService>();
         services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
         services.AddScoped<IAuthenticateService, AuthenticateService>();
         services.AddScoped<IBookService, BookService>();
         services.AddScoped<IFavoriteService, FavoriteService>();
-        services.AddScoped<INotifier, Notifier>();
         services.AddScoped<IRatingService, RatingService>();
         services.AddScoped<ITradeService, TradeService>();
         services.AddScoped<IUserService, UserService>();

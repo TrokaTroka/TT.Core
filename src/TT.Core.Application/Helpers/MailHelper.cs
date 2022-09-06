@@ -77,7 +77,7 @@ public class MailHelper : IEmailHelper
 
             var assembly = Assembly.GetCallingAssembly();
 
-            var resourceName = $"TrokaTroka.Application.Template.{name}";
+            var resourceName = $"TT.Core.Application.Template.{name}";
 
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {

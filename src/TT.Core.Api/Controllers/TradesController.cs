@@ -2,18 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using TT.Core.Application.Dtos.Inputs;
 using TT.Core.Application.Interfaces;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class TradesController : MainController
+public class TradesController : ControllerBase
 {
     private readonly ITradeService _tradeService;
-    public TradesController(ITradeService tradeService,
-        INotifier notifier) : base(notifier)
+    public TradesController(ITradeService tradeService)
     {
         _tradeService = tradeService;
     }
@@ -21,12 +19,12 @@ public class TradesController : MainController
     [HttpGet]
     public async Task<IActionResult> GetAllTrades()
     {
-        var result = await _tradeService.GetAll();
+        var attempt = await _tradeService.GetAll();
 
-        if (result is null)
-            return BadRequest("");
+        if (attempt.Succeeded)
+            return Ok(attempt);
 
-        return Ok(result);
+        return BadRequest(attempt);
     }
 
     [HttpPost]
@@ -35,8 +33,11 @@ public class TradesController : MainController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await _tradeService.Create(tradeDto);
+        var attempt = await _tradeService.Create(tradeDto);
 
-        return Created(nameof(GetAllTrades), "");
+        if(attempt.Succeeded)
+            return Created(nameof(GetAllTrades), attempt);
+
+        return BadRequest(attempt);
     }
 }

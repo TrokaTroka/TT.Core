@@ -1,13 +1,12 @@
 ﻿using TT.Core.Application.Dtos.Inputs;
 using TT.Core.Application.Interfaces;
 using TT.Core.Application.Interfaces.Helpers;
-using TT.Core.Application.Notifications;
 using TT.Core.Domain.Entities;
 using TT.Core.Domain.Interfaces.Repositories;
 
 namespace TT.Core.Application.Services;
 
-public class TradeService : BaseService, ITradeService
+public class TradeService : ITradeService
 {
     private readonly string ServiceName = "Trade";
 
@@ -23,8 +22,7 @@ public class TradeService : BaseService, ITradeService
         IUserRepository userRepository,
         IAuthenticatedUser user,
         ILogErrorRepository log,
-        IEmailHelper mailHelper,
-        INotifier notifier) : base(notifier)
+        IEmailHelper mailHelper)
     {
         _tradRepository = tradRepository;
         _bookRepository = bookRepository;
@@ -34,8 +32,10 @@ public class TradeService : BaseService, ITradeService
         _mailHelper = mailHelper;
     }
 
-    public async Task Create(CreateTradeDto tradeDto)
+    public async Task<Attempt<Failure, bool>> Create(CreateTradeDto tradeDto)
     {
+        var failure = new Failure();
+
         try
         {
             var email = _user.GetEmailUserLogged();
@@ -60,26 +60,41 @@ public class TradeService : BaseService, ITradeService
             var attempt = await _mailHelper.Send(notification);
 
             if (!attempt.Succeeded)
-                return ;
+            {
+                failure.SetMessage("Erro ao enviar email");
+                return failure;
+            }
 
             await _tradRepository.Create(trade);
+            return true;
         }
         catch (Exception ex)
         {
-            var log = new LogError(ServiceName, nameof(Create), ex.Message);
-            await _log.Create(log);
-            return ;
+            failure.SetMessage(ex.Message);
+            await _log.Create(new LogError(ServiceName, nameof(Create), ex.Message));
+            return failure;
         }            
     }
 
-    public async Task<CreateTradeDto> GetAll()
+    public async Task<Attempt<Failure, CreateTradeDto>> GetAll()
     {
-        var email = _user.GetEmailUserLogged();
+        var failure = new Failure();
 
-        var user = await _userRepository.GetUserByEmail(email);
+        try
+        {
+            var email = _user.GetEmailUserLogged();
 
-        var trades = await _tradRepository.SearchAll(t => t.IdUserGived == user.Id);
+            var user = await _userRepository.GetUserByEmail(email);
 
-        return new CreateTradeDto();
+            var trades = await _tradRepository.SearchAll(t => t.IdUserGived == user.Id);
+
+            return new CreateTradeDto();
+        }
+        catch (Exception ex)
+        {
+            failure.SetMessage(ex.Message);
+            await _log.Create(new LogError(ServiceName, nameof(Create), ex.Message));
+            return failure;
+        }
     }
 }

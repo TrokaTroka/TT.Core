@@ -2,19 +2,17 @@
 using Microsoft.AspNetCore.Authorization;
 using TT.Core.Application.Interfaces;
 using TT.Core.Application.Dtos.Inputs;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class RatingsController : MainController
+public class RatingsController : ControllerBase
 {
     private readonly IRatingService _ratingService;
 
-    public RatingsController(IRatingService ratingService,
-        INotifier notifier) : base(notifier)
+    public RatingsController(IRatingService ratingService)
     {
         _ratingService = ratingService;
     }
@@ -25,11 +23,11 @@ public class RatingsController : MainController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _ratingService.Create(createRatingDto);
+        var attempt = await _ratingService.Create(createRatingDto);
 
-        if (result.Equals(Guid.Empty))
-            return BadRequest("");
-        
-        return Created(nameof(CreateRating), result);
+        if (attempt.Succeeded)
+            return Created(nameof(CreateRating), attempt);
+
+        return BadRequest(attempt);
     }
 }

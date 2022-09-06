@@ -3,17 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using TT.Core.Application.Dtos.Inputs.Querys;
 using TT.Core.Application.Dtos.Inputs;
 using TT.Core.Application.Interfaces;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BooksController : MainController
+public class BooksController : ControllerBase
 {
     private readonly IBookService _bookService;
-    public BooksController(IBookService bookService,
-        INotifier notifier) : base(notifier)
+    public BooksController(IBookService bookService)
     {
         _bookService = bookService;
     }
@@ -22,36 +20,36 @@ public class BooksController : MainController
     [Route("")]
     public async Task<IActionResult> GetBookshell([FromQuery] PaginationQuery paginationQuery)
     {
-        var booksVM = await _bookService.GetBookshell(paginationQuery);
+        var attempt = await _bookService.GetBookshell(paginationQuery);
 
-        if (booksVM is null)
-            return NotFound("");
+        if (attempt.Succeeded)
+            return Ok(attempt);
 
-        return Ok(booksVM);
+        return NotFound(attempt);
     }
 
     [HttpGet]
     [Route("{idBook}")]
     public async Task<IActionResult> GetBookById(Guid idBook)
     {
-        var bookVM = await _bookService.GetBookById(idBook);
+        var attempt = await _bookService.GetBookById(idBook);
 
-        if (bookVM is null)
-            return BadRequest();
+        if (attempt.Succeeded)
+            return Ok(attempt);
 
-        return Ok(bookVM);
+        return BadRequest(attempt);
     }
 
     [HttpGet]
     [Route("my-books")]
     public async Task<IActionResult> GetMyBooks()
     {
-        var bookVM = await _bookService.GetMyBooks();
+        var attempt = await _bookService.GetMyBooks();
 
-        if (bookVM is null)
-            return BadRequest("");
+        if (attempt.Succeeded)
+            return Ok(attempt);
 
-        return Ok(bookVM);
+        return BadRequest(attempt);
     }
 
     [Authorize]
@@ -64,12 +62,12 @@ public class BooksController : MainController
         if (createBookDto.Images is null)
             return BadRequest();
 
-        var result = await _bookService.CreateBook(createBookDto);
+        var attempt = await _bookService.CreateBook(createBookDto);
 
-        if (result.Equals(Guid.Empty))
-            return BadRequest();
-        
-        return Created(nameof(GetBookById), result);
+        if (attempt.Succeeded)
+            return Created(nameof(GetBookById), attempt);
+
+        return BadRequest(attempt);
     }
 
     [Authorize]
@@ -79,9 +77,12 @@ public class BooksController : MainController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await _bookService.UpdateBook(updateBookDto);
+        var attempt = await _bookService.UpdateBook(updateBookDto);
 
-        return NoContent();
+        if(attempt.Succeeded)
+            return Ok(attempt);
+
+        return BadRequest(attempt);
     }
 
     [Authorize]
@@ -92,8 +93,11 @@ public class BooksController : MainController
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await _bookService.DeleteBook(idBook);
+        var attempt = await _bookService.DeleteBook(idBook);
 
-        return NoContent();
+        if (attempt.Succeeded)
+            return Ok(attempt);
+
+        return BadRequest(attempt);
     }
 }

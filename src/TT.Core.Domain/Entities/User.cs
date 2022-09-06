@@ -8,8 +8,8 @@ public class User : EntityBase
     public string Password { get; private set; }
     public string Name { get; private set; }
     public string Document { get; private set; }
-    public string AvatarName { get; private set; }
-    public string AvatarPath { get; private set; }
+    public string? AvatarName { get; private set; }
+    public string? AvatarPath { get; private set; }
 
     public void UpdateUser(string name, string document, string email)
     {

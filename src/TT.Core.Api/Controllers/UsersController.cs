@@ -2,18 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using TT.Core.Application.Dtos.Inputs;
 using TT.Core.Application.Interfaces;
-using TT.Core.Application.Notifications;
 
 namespace TT.Core.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class UsersController : MainController
+public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
-    public UsersController(IUserService userService,
-        INotifier notifier) : base(notifier)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
     }
@@ -21,12 +19,12 @@ public class UsersController : MainController
     [HttpPost]
     public async Task<IActionResult> UpdateUser([FromForm] UpdateUserDto updateUserDto)
     {
-        var result = await _userService.UpdateUser(updateUserDto);
+        var attempt = await _userService.UpdateUser(updateUserDto);
 
-        if (result == null)
-            return BadRequest("");
+        if (attempt.Succeeded)
+            return Ok(attempt);
 
-        return Ok(result);
+        return BadRequest(attempt);
     }
 
     [AllowAnonymous]
@@ -34,8 +32,11 @@ public class UsersController : MainController
     [Route("activeaccount")]
     public async Task<IActionResult> ActiveAccount([FromQuery] Guid key)
     {
-        await _userService.ActiveAccount(key);
+        var attempt = await _userService.ActiveAccount(key);
 
-        return Ok();
+        if(attempt.Succeeded)
+            return Ok(attempt);
+
+        return BadRequest(attempt);
     }
 }
