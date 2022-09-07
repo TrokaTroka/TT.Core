@@ -1,3 +1,9 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ master ]
+
 jobs:
   analize:
     runs-on: windows-latest
