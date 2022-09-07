@@ -1,5 +1,4 @@
-name: 🚀 Build & Deploy
-
+name: SonarCloud Analize
 on:
   push:
     branches:
@@ -46,24 +45,3 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"TrokaTroka_TT.Core" /o:"trokatroka-github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build --configuration Release 
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Build with dotnet
-        run: dotnet build --configuration Release --no-restore
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
-      - name: Publish
-        run: dotnet publish -c Release --output ./Release
-      - name: FTP Deploy
-        uses: airvzxf/ftp-deployment-action@latest
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local_dir: "./Release"
-          remote_dir: "./httpdocs"
-          delete: "true"
